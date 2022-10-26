@@ -1,22 +1,38 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { getContacts } from 'redux/selectors';
+import { addContact } from 'redux/contactsSlice';
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 import css from './ContactForm.module.css'
 
-const ContactForm = ({onSubmit}) => {
+const ContactForm = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(getContacts)
+  const dispatch = useDispatch();
 
   const handleSubmit = event => {
     event.preventDefault();
-    const newContactId = nanoid();
-    onSubmit({ id: newContactId, name, number });
+
+    addNewContact(name);
     setName('');
-    setNumber('');
-  }
+    setNumber('')
+  };
+
+  const addNewContact = (contactName) => {
+    const normalizedNameNewContract = contactName.toLowerCase();
+    const contactNames = contacts.map(contact => {
+      const contactName = contact.name;
+      return contactName.toLowerCase()
+    })
+    if (contactNames.includes(normalizedNameNewContract)) {
+      return alert(`${name} is already in contacts.`)
+    }
+      
+    dispatch(addContact(name, number));
+  };
 
   const handleChange = event => {
-    const {name, value} = event.currentTarget
+    const { name, value } = event.currentTarget
     
     switch (name) {
       case 'name':
@@ -27,8 +43,8 @@ const ContactForm = ({onSubmit}) => {
         break;
       default:
         return;
-    }
-  }
+    };
+  };
 
   return <form className={css.form} onSubmit={handleSubmit}>
         <label className={css.inputLabel}> Name
@@ -60,10 +76,6 @@ const ContactForm = ({onSubmit}) => {
         <button type="submit" className={css.btn}>Add contact</button>
       </form>
     
-}
-
-ContactForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
 }
 
 export default ContactForm;
