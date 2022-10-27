@@ -1,6 +1,5 @@
 import { useSelector } from 'react-redux';
 import { getContacts, getFilter } from 'redux/selectors';
-import PropTypes from 'prop-types'
 import ContactItem from '../ContactItem/ContactItem'
 import css from './ContactList.module.css'
 
@@ -28,14 +27,6 @@ const ContactList = () => {
             return <ContactItem name={name} number={number} key={id} id={id} />
         })}
     </ul>
-}
-
-ContactList.propTypes = {
-    contacts: PropTypes.arrayOf(PropTypes.exact({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        number: PropTypes.string.isRequired,
-    })),
 }
 
 export default ContactList
