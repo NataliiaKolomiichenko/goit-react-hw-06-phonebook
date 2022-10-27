@@ -14,8 +14,6 @@ const ContactForm = () => {
     event.preventDefault();
 
     addNewContact(name);
-    setName('');
-    setNumber('')
   };
 
   const addNewContact = (contactName) => {
@@ -29,6 +27,8 @@ const ContactForm = () => {
     }
       
     dispatch(addContact(name, number));
+    setName('');
+    setNumber('')
   };
 
   const handleChange = event => {
